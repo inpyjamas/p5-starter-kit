@@ -1,5 +1,5 @@
 {
-	"name": "p5kit.inpyjamas.dev",
+	"name": "@inpyjamas/p5kit",
 	"type": "module",
 	"version": "1.0.1",
 	"scripts": {
