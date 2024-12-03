@@ -7,18 +7,60 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
 	<main>
-		<a href="/api/package" download="package">download p5.js kit</a>
+		<h1>p5.js Starter Kit</h1>
+		<p>
+			An opinionated starter kit for p5.js. It contains always the latest p5.js
+			library and sound addons plus the <a
+				href="https://www.npmjs.com/package/@ff6347/p5-easing"
+				target="_blank">@ff6347/p5-easing</a
+			> library.
+		</p>
+		<p>Download the</p>
+		<a href="/api/package" download="package" id="download-link">
+			full p5.js kit</a
+		>
+		<p>
+			or grab the
+			<a
+				href="/api/package?minimal=true"
+				download="package"
+				id="download-link-minimal"
+			>
+				minimal p5.js kit.</a
+			>
+
+			The minimal version does not contain files like .editorconfig, .gitignore,
+			etc. (an attempt to make Windows Defender happy <code>¯\_(ツ)_/¯</code>)
+		</p>
 	</main>
+	<footer>
+		<p>
+			Made with &heartsuit; by <a
+				href="https://fabianmoronzirfas.me"
+				target="_blank">ff6347</a
+			> in his pyjamas. Check out the source on <a
+				href="https://github.com/inpyjamas/p5-starter-kit"
+				target="_blank">GitHub</a
+			>
+		</p>
+	</footer>
 </Layout>
 <style>
-	main {
-		text-align: center;
+	* {
 		/* Geometric Humanist */
 		font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
 			sans-serif;
-		font-weight: normal;
+		box-sizing: border-box;
 	}
-	main a {
+	main {
+		font-weight: normal;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		max-width: 60ch;
+	}
+	main a#download-link {
 		display: inline-block;
 		padding: 1rem 2rem;
 		background-color: #f0f0f0;
@@ -26,9 +68,14 @@ import Layout from "../layouts/Layout.astro";
 		text-decoration: none;
 		border-radius: 0rem;
 		transition: all 250ms;
+		max-width: fit-content;
 	}
-	main a:hover {
+	main a#download-link:hover {
 		background-color: #ff6347;
 		color: #f0f0f0;
+	}
+
+	footer {
+		font-size: 0.8rem;
 	}
 </style>

@@ -22,8 +22,11 @@ const getNpmTarball: (
 	return data.dist.tarball;
 };
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ url }) => {
 	const modules = ["p5", "@ff6347/p5-easing"];
+
+	const params = url.searchParams;
+	const isMinimal = params.get("minimal") === "true";
 
 	const zip = new JSZip();
 	const moduleContents = await Promise.all(
@@ -99,9 +102,10 @@ export const GET: APIRoute = async () => {
 		}),
 	);
 
-	zip.file(
-		".editorconfig",
-		`root = true
+	if (!isMinimal) {
+		zip.file(
+			".editorconfig",
+			`root = true
 [*]
 indent_style = tab
 indent_size = 2
@@ -113,18 +117,19 @@ max_line_length = 80
 
 [*.{yml,yaml}]
 indent_style = space`,
-	);
-	zip.file(
-		".vscode/extensions.json",
-		`{
+		);
+		zip.file(
+			".vscode/extensions.json",
+			`{
 	"recommendations": [
 		"ms-vscode.live-server",
 		"esbenp.prettier-vscode",
 		"ritwickdey.liveserver"
 	]
 }`,
-	);
-	zip.file(".vscode/settings.json", `{ "prettier.useEditorConfig": true }`);
+		);
+		zip.file(".vscode/settings.json", `{ "prettier.useEditorConfig": true }`);
+	}
 
 	zip.file(
 		"index.html",
@@ -159,9 +164,9 @@ indent_style = space`,
     <div id="sketch"></div>
     <a href="index.js">souce code</a>
     </main>
-    <script src="./modules/p5/lib/p5.min.js"></script>
-    <!-- <script src="./modules/p5/lib/addons/p5.sound.min.js"></script> -->
-   <!-- <script src="./modules/@ff6347/p5-easing/dist/p5.easing.min.js"></script> -->
+    <script src="${isMinimal ? "lib/p5.min.js" : "./modules/p5/lib/p5.min.js"}"></script>
+    <!-- <script src="${isMinimal ? "lib/p5.sound.min.js" : "./modules/p5/lib/addons/p5.sound.min.js"}"></script> -->
+   <!-- <script src="${isMinimal ? "lib/p5.easing.min.js" : "./modules/@ff6347/p5-easing/dist/p5.easing.min.js"}"></script> -->
 
     <script src="index.js"></script>
 </body>
@@ -186,7 +191,19 @@ function draw() {}
 	moduleContents.forEach((module) => {
 		// Add entire package contents to modules directory
 		Object.entries(module.files).forEach(([filepath, content]) => {
-			zip.file(`modules/${module.name}/${filepath}`, content);
+			if (isMinimal) {
+				if (filepath.includes("p5.min.js")) {
+					zip.file(`lib/p5.min.js`, content);
+				}
+				if (filepath.includes("p5.easing.min.js")) {
+					zip.file(`lib/p5.easing.min.js`, content);
+				}
+				if (filepath.includes("p5.sound.min.js")) {
+					zip.file(`lib/p5.sound.min.js`, content);
+				}
+			} else {
+				zip.file(`modules/${module.name}/${filepath}`, content);
+			}
 		});
 	});
 
@@ -195,7 +212,7 @@ function draw() {}
 	return new Response(zipContent, {
 		headers: {
 			"Content-Type": "application/zip",
-			"Content-Disposition": `attachment; filename="p5-starter-${Date.now()}.zip"`,
+			"Content-Disposition": `attachment; filename="p5-starter-${Date.now()}-${isMinimal ? "minimal" : "full"}.zip"`,
 		},
 	});
 };
