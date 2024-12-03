@@ -1,3 +1,11 @@
+## [1.1.2](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.1...v1.1.2) (2024-12-03)
+
+
+### Bug Fixes
+
+* footer padding ([ddaa2bf](https://github.com/inpyjamas/p5-starter-kit/commit/ddaa2bfdbd4b6c68f97dca7d01dda9262c91f8e4))
+* Mobile width ([9607fb6](https://github.com/inpyjamas/p5-starter-kit/commit/9607fb6478dc234dbbf203bc8c7a2dbb6d45ffaa))
+
 ## [1.1.1](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.0...v1.1.1) (2024-12-03)
 
 
