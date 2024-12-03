@@ -1,16 +1,42 @@
 {
-  "name": "p5kit.inpyjamas.dev",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "^4.16.16",
-    "@astrojs/check": "^0.9.4",
-    "typescript": "^5.7.2"
-  }
+	"name": "p5kit.inpyjamas.dev",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.9.4",
+		"@astrojs/netlify": "5.5.4",
+		"astro": "^4.16.16",
+		"jszip": "3.10.1",
+		"tar": "7.4.3",
+		"typescript": "^5.7.2"
+	},
+	"devDependencies": {
+		"@technologiestiftung/semantic-release-config": "1.2.4",
+		"@types/tar": "6.1.13",
+		"semantic-release": "24.2.0"
+	},
+	"prettier": {
+		"tabWidth": 2,
+		"semi": true,
+		"singleQuote": false,
+		"useTabs": true,
+		"printWidth": 80,
+		"overrides": [
+			{
+				"files": [
+					"*.yml",
+					"*.yaml"
+				],
+				"options": {
+					"useTabs": false
+				}
+			}
+		]
+	}
 }
