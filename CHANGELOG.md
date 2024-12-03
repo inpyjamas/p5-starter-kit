@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/inpyjamas/p5-starter-kit/compare/v1.0.0...v1.0.1) (2024-12-03)
+
+
+### Bug Fixes
+
+* Don't publish to npm ([0887b4b](https://github.com/inpyjamas/p5-starter-kit/commit/0887b4b8473bd27a3719f2b16896647159187290))
+
 # 1.0.0 (2024-12-03)
 
 
