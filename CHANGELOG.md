@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.0...v1.1.1) (2024-12-03)
+
+
+### Bug Fixes
+
+* Add padding for mobile view ([3e76f8d](https://github.com/inpyjamas/p5-starter-kit/commit/3e76f8d669269568de8cee4378abe9d2ff1cd453))
+
 # [1.1.0](https://github.com/inpyjamas/p5-starter-kit/compare/v1.0.1...v1.1.0) (2024-12-03)
 
 
