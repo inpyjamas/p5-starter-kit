@@ -22,3 +22,26 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+.netlify/build/_@astrojs-ssr-adapter.mjs
+.netlify/build/_noop-middleware.mjs
+.netlify/build/entry.mjs
+.netlify/build/manifest_BBAk5QeF.mjs
+.netlify/build/renderers.mjs
+.netlify/build/chunks/_@astrojs-ssr-adapter_CvSoi7hX.mjs
+.netlify/build/chunks/astro/assets-service_Lr3skfey.mjs
+.netlify/build/chunks/astro/server_C4pkSLoS.mjs
+.netlify/build/pages/_image.astro.mjs
+.netlify/build/pages/index.astro.mjs
+.netlify/build/pages/api/package.astro.mjs
+.netlify/v1/functions/ssr/ssr.mjs
+.netlify/v1/functions/ssr/.netlify/build/_noop-middleware.mjs
+.netlify/v1/functions/ssr/.netlify/build/entry.mjs
+.netlify/v1/functions/ssr/.netlify/build/manifest_BBAk5QeF.mjs
+.netlify/v1/functions/ssr/.netlify/build/renderers.mjs
+.netlify/v1/functions/ssr/.netlify/build/chunks/_@astrojs-ssr-adapter_CvSoi7hX.mjs
+.netlify/v1/functions/ssr/.netlify/build/chunks/astro/assets-service_Lr3skfey.mjs
+.netlify/v1/functions/ssr/.netlify/build/chunks/astro/server_C4pkSLoS.mjs
+.netlify/v1/functions/ssr/.netlify/build/pages/_image.astro.mjs
+.netlify/v1/functions/ssr/.netlify/build/pages/index.astro.mjs
+.netlify/v1/functions/ssr/.netlify/build/pages/api/package.astro.mjs
+.netlify/v1/functions/ssr/src/pages/index.astro

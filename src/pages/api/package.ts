@@ -1,11 +1,11 @@
-import { Parser } from "tar";
+import { Parser, ReadEntry } from "tar";
 import JSZip from "jszip";
 
 import type { APIRoute } from "astro";
 
 // Get tarball URL for scoped npm package
 const getNpmTarball: (
-	scope: string,
+	scope: string | null,
 	packageName: string,
 	version?: string,
 ) => Promise<string> = async (scope, packageName, version = "latest") => {
@@ -22,10 +22,8 @@ const getNpmTarball: (
 	return data.dist.tarball;
 };
 
-const defaultModules = ["p5", "@ff6347/p5-easing"];
-
-export const GET: APIRoute = async ({ params, request }) => {
-	const modules = defaultModules;
+export const GET: APIRoute = async () => {
+	const modules = ["p5", "@ff6347/p5-easing"];
 
 	const zip = new JSZip();
 	const moduleContents = await Promise.all(
@@ -57,9 +55,9 @@ export const GET: APIRoute = async ({ params, request }) => {
 				await new Promise((resolve, reject) => {
 					const reader = new Parser();
 
-					reader.on("entry", (entry) => {
+					reader.on("entry", (entry: ReadEntry) => {
 						let content = "";
-						entry.on("data", (chunk) => {
+						entry.on("data", (chunk: Buffer) => {
 							content += new TextDecoder().decode(chunk);
 						});
 						entry.on("end", () => {
