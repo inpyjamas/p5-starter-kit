@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.2...v1.2.0) (2025-07-02)
+
+
+### Features
+
+* **packages:** Allow version selection ([38b4e28](https://github.com/inpyjamas/p5-starter-kit/commit/38b4e283c1e5bc274746b8e4442086ae5bfa2fe7))
+
 ## [1.1.2](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.1...v1.1.2) (2024-12-03)
 
 
