@@ -17,6 +17,46 @@ Some additional files are included to make it easier to hit the ground running.
 - index.html (basic HTML5 boilerplate)
 - index.js (basic p5.js boilerplate)
 
+## API Usage
+
+The starter kit generator provides an API endpoint that can be customized with URL parameters:
+
+### Basic Usage
+
+- `/api/package` - Downloads full kit with latest versions
+- `/api/package?minimal=true` - Downloads minimal kit (no dev config files)
+
+### Version Specification
+
+You can specify exact versions for each package:
+
+- `/api/package?p5=1.4.0` - Use specific p5.js version
+- `/api/package?p5-easing=1.0.0` - Use specific p5-easing version
+- `/api/package?p5=1.4.0&p5-easing=1.0.0` - Specify both versions
+- `/api/package?p5=1.4.0&minimal=true` - Combine with minimal mode
+
+### Error Handling
+
+- Returns **404** if specified version doesn't exist
+- Returns **500** for other server errors
+- Error responses include JSON with descriptive messages
+
+### Examples
+
+```bash
+# Latest versions (default)
+curl -O https://your-domain.com/api/package
+
+# Specific p5.js version
+curl -O "https://your-domain.com/api/package?p5=1.4.0"
+
+# Both packages with specific versions
+curl -O "https://your-domain.com/api/package?p5=1.4.0&p5-easing=1.0.0"
+
+# Minimal kit with specific version
+curl -O "https://your-domain.com/api/package?p5=1.4.0&minimal=true"
+```
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

@@ -1,4 +1,5 @@
-import { Parser, ReadEntry } from "tar";
+import { Parser } from "tar";
+import type { ReadEntry } from "tar";
 import JSZip from "jszip";
 
 import type { APIRoute } from "astro";
@@ -23,15 +24,29 @@ const getNpmTarball: (
 };
 
 export const GET: APIRoute = async ({ url }) => {
-	const modules = ["p5", "@ff6347/p5-easing"];
+	// Module configuration with URL parameter mapping
+	const moduleConfig = {
+		"p5": "p5",
+		"p5-easing": "@ff6347/p5-easing"
+	} as const;
 
 	const params = url.searchParams;
 	const isMinimal = params.get("minimal") === "true";
 
+	// Parse versions from URL parameters
+	const moduleVersions = new Map<string, string>();
+	for (const [paramName, fullPackageName] of Object.entries(moduleConfig)) {
+		const version = params.get(paramName) || "latest";
+		moduleVersions.set(fullPackageName, version);
+	}
+
+	const modules = Object.values(moduleConfig);
+
 	const zip = new JSZip();
-	const moduleContents = await Promise.all(
-		modules.map(async (moduleName) => {
-			try {
+	
+	try {
+		const moduleContents = await Promise.all(
+			modules.map(async (moduleName) => {
 				// Handle scoped and non-scoped package names
 				const packageNameParts = moduleName.split("/");
 				const scope =
@@ -41,14 +56,18 @@ export const GET: APIRoute = async ({ url }) => {
 				const packageName =
 					packageNameParts.length > 1 ? packageNameParts[1] : moduleName;
 
-				// Get tarball URL
-				const tarballUrl = await getNpmTarball(scope, packageName);
+				// Get version for this module
+				const version = moduleVersions.get(moduleName) || "latest";
 
-				const tarballResponse = await fetch(tarballUrl);
+				try {
+					// Get tarball URL
+					const tarballUrl = await getNpmTarball(scope, packageName, version);
 
-				if (!tarballResponse.ok) {
-					throw new Error(`Failed to download tarball for ${moduleName}`);
-				}
+					const tarballResponse = await fetch(tarballUrl);
+
+					if (!tarballResponse.ok) {
+						throw new Error(`Failed to download tarball for ${moduleName}`);
+					}
 
 				const tarballArrayBuffer = await tarballResponse.arrayBuffer();
 
@@ -90,17 +109,15 @@ export const GET: APIRoute = async ({ url }) => {
 						: "unknown",
 					files: extractedFiles,
 				};
-			} catch (error) {
-				console.error(`Error processing module ${moduleName}:`, error);
-				// Return a minimal object to prevent complete failure
-				return {
-					name: moduleName,
-					version: "error",
-					files: {},
-				};
-			}
-		}),
-	);
+				} catch (error) {
+					// Check if this is a version-related error
+					if (error instanceof Error && error.message.includes("Failed to fetch metadata")) {
+						throw new Error(`Version '${version}' not found for package '${moduleName}'`);
+					}
+					throw error;
+				}
+			}),
+		);
 
 	if (!isMinimal) {
 		zip.file(
@@ -207,12 +224,44 @@ function draw() {}
 		});
 	});
 
-	const zipContent = await zip.generateAsync({ type: "blob" });
+		const zipContent = await zip.generateAsync({ type: "blob" });
 
-	return new Response(zipContent, {
-		headers: {
-			"Content-Type": "application/zip",
-			"Content-Disposition": `attachment; filename="p5-starter-${Date.now()}-${isMinimal ? "minimal" : "full"}.zip"`,
-		},
-	});
+		return new Response(zipContent, {
+			headers: {
+				"Content-Type": "application/zip",
+				"Content-Disposition": `attachment; filename="p5-starter-${Date.now()}-${isMinimal ? "minimal" : "full"}.zip"`,
+			},
+		});
+	} catch (error) {
+		// Handle version-related errors
+		if (error instanceof Error && error.message.includes("not found for package")) {
+			return new Response(
+				JSON.stringify({ 
+					error: "Version not found", 
+					message: error.message 
+				}),
+				{
+					status: 404,
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+		}
+
+		// Handle other errors
+		console.error("Error generating package:", error);
+		return new Response(
+			JSON.stringify({ 
+				error: "Internal server error", 
+				message: "Failed to generate package" 
+			}),
+			{
+				status: 500,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+	}
 };
