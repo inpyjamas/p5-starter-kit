@@ -15,6 +15,25 @@ import Layout from "../layouts/Layout.astro";
 				target="_blank">@ff6347/p5-easing</a
 			> library.
 		</p>
+
+		<details class="version-selector">
+			<summary>Optional: Select specific versions</summary>
+			<div class="version-controls">
+				<label>
+					p5.js:
+					<select id="p5-version">
+						<option value="latest">latest</option>
+					</select>
+				</label>
+				<label>
+					p5-easing:
+					<select id="p5-easing-version">
+						<option value="latest">latest</option>
+					</select>
+				</label>
+			</div>
+		</details>
+
 		<p>Download the</p>
 		<a href="/api/package" download="package" id="download-link">
 			full p5.js kit</a
@@ -45,6 +64,93 @@ import Layout from "../layouts/Layout.astro";
 		</p>
 	</footer>
 </Layout>
+
+<script>
+	// Fetch and populate version selectors
+	async function loadVersions() {
+		try {
+			const response = await fetch("/api/versions");
+			const versions = await response.json();
+
+			// Populate p5 version selector
+			const p5Select = document.getElementById("p5-version");
+			if (versions.p5 && p5Select) {
+				versions.p5.forEach((version: string) => {
+					if (version !== "latest") {
+						const option = document.createElement("option");
+						option.value = version;
+						option.textContent = version;
+						p5Select.appendChild(option);
+					}
+				});
+			}
+
+			// Populate p5-easing version selector
+			const easingSelect = document.getElementById("p5-easing-version");
+			if (versions["p5-easing"] && easingSelect) {
+				versions["p5-easing"].forEach((version: string) => {
+					if (version !== "latest") {
+						const option = document.createElement("option");
+						option.value = version;
+						option.textContent = version;
+						easingSelect.appendChild(option);
+					}
+				});
+			}
+		} catch (error) {
+			console.error("Failed to load versions:", error);
+		}
+	}
+
+	// Update download links based on selected versions
+	function updateDownloadLinks() {
+		const p5Version = (
+			document.getElementById("p5-version") as HTMLSelectElement
+		)?.value;
+		const easingVersion = (
+			document.getElementById("p5-easing-version") as HTMLSelectElement
+		)?.value;
+
+		const params = new URLSearchParams();
+		if (p5Version && p5Version !== "latest") {
+			params.set("p5", p5Version);
+		}
+		if (easingVersion && easingVersion !== "latest") {
+			params.set("p5-easing", easingVersion);
+		}
+
+		const fullLink = document.getElementById(
+			"download-link",
+		) as HTMLAnchorElement;
+		const minimalLink = document.getElementById(
+			"download-link-minimal",
+		) as HTMLAnchorElement;
+
+		if (fullLink) {
+			fullLink.href = `/api/package${params.toString() ? "?" + params.toString() : ""}`;
+		}
+
+		if (minimalLink) {
+			const minimalParams = new URLSearchParams(params);
+			minimalParams.set("minimal", "true");
+			minimalLink.href = `/api/package?${minimalParams.toString()}`;
+		}
+	}
+
+	// Initialize on page load
+	document.addEventListener("DOMContentLoaded", () => {
+		loadVersions();
+
+		// Add change listeners to update links
+		document
+			.getElementById("p5-version")
+			?.addEventListener("change", updateDownloadLinks);
+		document
+			.getElementById("p5-easing-version")
+			?.addEventListener("change", updateDownloadLinks);
+	});
+</script>
+
 <style>
 	* {
 		/* Geometric Humanist */
@@ -78,5 +184,37 @@ import Layout from "../layouts/Layout.astro";
 	footer {
 		padding: 16px;
 		font-size: 0.8rem;
+	}
+
+	.version-selector {
+		margin: 1rem 0;
+	}
+
+	.version-selector summary {
+		cursor: pointer;
+		font-size: 0.9rem;
+		color: #666;
+		margin-bottom: 0.5rem;
+	}
+
+	.version-controls {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0.5rem 0;
+	}
+
+	.version-controls label {
+		font-size: 0.85rem;
+		color: #333;
+	}
+
+	.version-controls select {
+		margin-left: 0.25rem;
+		padding: 0.25rem;
+		font-size: 0.8rem;
+		border: 1px solid #ccc;
+		background: white;
 	}
 </style>
