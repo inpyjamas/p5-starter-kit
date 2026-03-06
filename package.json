@@ -13,7 +13,7 @@
 		"@astrojs/netlify": "5.5.4",
 		"astro": "^4.16.16",
 		"jszip": "3.10.1",
-		"tar": "7.4.3",
+		"tar": "7.5.10",
 		"typescript": "^5.7.2"
 	},
 	"devDependencies": {
