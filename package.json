@@ -10,15 +10,14 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.6",
-		"@astrojs/netlify": "5.5.4",
-		"astro": "^4.16.19",
-		"jszip": "3.10.1",
-		"tar": "7.5.11",
+		"@astrojs/netlify": "^6.6.4",
+		"astro": "^5.18.0",
+		"jszip": "^3.10.1",
+		"tar": "^7.5.11",
 		"typescript": "^5.9.3"
 	},
 	"devDependencies": {
 		"@technologiestiftung/semantic-release-config": "1.2.4",
-		"@types/tar": "6.1.13",
 		"semantic-release": "24.2.9"
 	},
 	"prettier": {
