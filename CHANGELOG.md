@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/inpyjamas/p5-starter-kit/compare/v1.2.0...v1.3.0) (2026-03-09)
+
+
+### Features
+
+* upgrade to Astro 5 and @astrojs/netlify 6 ([562a4d4](https://github.com/inpyjamas/p5-starter-kit/commit/562a4d44e70d8435a8e7c2bc5982f27d4b08c17d))
+
 # [1.2.0](https://github.com/inpyjamas/p5-starter-kit/compare/v1.1.2...v1.2.0) (2025-07-02)
 
 
