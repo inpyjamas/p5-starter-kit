@@ -11,7 +11,7 @@
 	"dependencies": {
 		"@astrojs/check": "^0.9.6",
 		"@astrojs/netlify": "5.5.4",
-		"astro": "^4.16.19",
+		"astro": "^5.0.0",
 		"jszip": "3.10.1",
 		"tar": "7.5.11",
 		"typescript": "^5.9.3"
